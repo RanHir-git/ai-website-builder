@@ -1,0 +1,13 @@
+/* Import base styles */
+@import './basics/base.css';
+@import './basics/layout.css';
+@import './basics/typography.css';
+
+/* Import component styles */
+@import './cmps/Header.css';
+@import './cmps/Footer.css';
+
+/* Import page styles */
+@import './pages/HomePage.css';
+@import './pages/AboutPage.css';
+@import './pages/ContactPage.css';
