@@ -1,17 +1,20 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
+import { AuthProvider } from './contexts/AuthContext'
+import { initializeData } from './services/dataService'
 import App from './App.jsx'
-import { store } from './store/store.js'
 import './assets/styles/main.css'
+
+// Initialize data from JSON files if localStorage is empty
+initializeData().catch(console.error)
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <App />
-      </BrowserRouter>
-    </Provider>
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>,
 )

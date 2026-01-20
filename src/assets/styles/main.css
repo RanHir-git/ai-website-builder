@@ -1,4 +1,4 @@
-/* Import base styles */
+/* Import base styles - your custom reset comes first */
 @import './basics/base.css';
 @import './basics/layout.css';
 @import './basics/typography.css';
@@ -6,8 +6,21 @@
 /* Import component styles */
 @import './cmps/Header.css';
 @import './cmps/Footer.css';
+@import './cmps/homepage/Hero.css';
+@import './cmps/Modal.css';
+@import './cmps/Sidebar.css';
+@import './cmps/EditorPanel.css';
 
 /* Import page styles */
 @import './pages/HomePage.css';
 @import './pages/AboutPage.css';
 @import './pages/ContactPage.css';
+@import './pages/MyProjectsPage.css';
+@import './pages/CommunityPage.css';
+@import './pages/PricingPage.css';
+
+@import '../setup/typography.css';
+
+/* Tailwind utilities - must come after custom styles */
+@tailwind components;
+@tailwind utilities;

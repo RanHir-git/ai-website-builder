@@ -1,0 +1,24 @@
+/* Brighten text for Basic and Enterprise tickets */
+.basic-ticket,
+.basic-ticket p,
+.basic-ticket h1 {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.basic-ticket ul,
+.basic-ticket li,
+.basic-ticket span {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.enterprise-ticket,
+.enterprise-ticket p,
+.enterprise-ticket h1 {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.enterprise-ticket ul,
+.enterprise-ticket li,
+.enterprise-ticket span {
+    color: rgba(255, 255, 255, 0.7) !important;
+}

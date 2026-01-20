@@ -1,0 +1,93 @@
+/* Hero Component Styles */
+
+/* Textarea placeholder styling */
+.hero-form textarea::placeholder {
+    padding-top: 3.5rem !important;
+    padding-left: 5rem !important;
+    text-align: center !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    opacity: 1 !important; /* Firefox */
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+}
+
+.hero-form textarea::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+}
+
+.hero-form textarea::-moz-placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+    opacity: 1 !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+}
+
+.hero-form textarea:-ms-input-placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-size: 0.875rem !important;
+    font-weight: 400 !important;
+}
+
+/* Textarea focus state */
+.hero-form textarea:focus::placeholder {
+    color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Form container - relative positioning for button */
+.hero-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem !important; /* Slightly more padding than p-4 */
+}
+
+/* Textarea styling - for the text you type */
+.hero-form .hero-textarea {
+    color: #ffffff83 !important;
+    font-size: 0.875rem !important;
+    line-height: 1.5rem !important;
+    font-weight: 400 !important;
+    padding-right: 140px !important; /* Space for button on the right */
+    padding-bottom: 3rem !important; /* Space for button at bottom */
+    padding-top: 0.5rem !important; /* Small space from top edge */
+    padding-left: 0.5rem !important; /* Small space from left edge */
+    background-color: transparent !important;
+}
+
+.hero-form .hero-textarea:focus {
+    color: #ffffff !important;
+    outline: none !important;
+}
+
+/* Style the text when typing */
+.hero-form .hero-textarea::selection {
+    background-color: rgba(79, 70, 229, 0.3); /* Indigo selection color */
+    color: #ffffff51;
+}
+
+/* Button positioned inside textarea */
+.hero-form .hero-submit-btn {
+    position: absolute !important;
+    bottom: 1rem !important;
+    right: 1rem !important;
+    z-index: 100 !important;
+    cursor: pointer !important;
+    transition: transform 0.2s, opacity 0.2s !important;
+    margin-right: 1rem !important;
+    margin-bottom: 1rem !important;
+    color: #ffffffcb !important;
+    padding: 0.5rem 1rem !important;
+    background-color: var(--primary-color) !important;
+    border-radius: 0.5rem !important;
+}
+
+.hero-form .hero-submit-btn:hover {
+    transform: scale(1.05) !important;
+    opacity: 0.9 !important;
+}
+
+.hero-form .hero-submit-btn:active {
+    transform: scale(0.95) !important;
+}

@@ -1,0 +1,32 @@
+/* ProjectPreview Component Styles */
+
+.project-preview-container {
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+}
+
+/* Chrome, Safari, Edge */
+.project-preview-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.project-preview-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.project-preview-container::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.3);
+    border-radius: 3px;
+}
+
+.project-preview-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 163, 175, 0.5);
+}
+
+/* Style the iframe scrollbar by injecting styles into iframe content */
+.project-preview-iframe {
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+}
