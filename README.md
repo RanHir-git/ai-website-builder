@@ -1,207 +1,313 @@
-# React Starter Website with Redux
+# AI Website Builder
 
-A complete starter React website with Redux store setup, ready for development.
+A full-stack web application that uses AI (OpenAI GPT) to generate and modify HTML websites based on natural language prompts. Users can create, edit, publish, and share their AI-generated websites.
 
-## 📁 Project Structure
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![License](https://img.shields.io/badge/license-ISC-green.svg)
+
+## 🚀 Features
+
+- **AI-Powered Website Generation**: Create complete HTML websites from natural language descriptions
+- **AI-Powered Modifications**: Modify existing websites using conversational prompts
+- **Project Management**: Create, edit, delete, and organize multiple projects
+- **Community Gallery**: Browse and view published projects from other users
+- **User Authentication**: Secure registration and login with JWT tokens
+- **Credit System**: Track usage with credits (5 credits per project creation)
+- **Real-time Preview**: See your website changes instantly
+- **Conversation History**: Track all AI interactions for each project
+- **Version Control**: Keep track of project versions and history
+
+## 🏗️ Architecture
+
+This is a **monorepo** containing both frontend and backend:
 
 ```
-starter-website/
-├── src/
-│   ├── cmps/              # Components
-│   │   ├── Header.jsx
-│   │   └── Footer.jsx
-│   ├── pages/             # Page components
-│   │   ├── HomePage.jsx
-│   │   ├── AboutPage.jsx
-│   │   └── ContactPage.jsx
-│   ├── store/             # Redux store
-│   │   ├── store.js       # Store configuration
-│   │   ├── reducers/      # Redux reducers
-│   │   │   ├── itemsReducer.js
-│   │   │   └── usersReducer.js
-│   │   └── actions/       # Redux actions
-│   │       ├── itemsActions.js
-│   │       └── usersActions.js
-│   ├── assets/
-│   │   ├── imgs/          # Images
-│   │   └── styles/        # CSS files
-│   │       ├── basics/    # Base styles
-│   │       ├── cmps/      # Component styles
-│   │       └── pages/     # Page styles
-│   ├── App.jsx            # Main app component
-│   └── main.jsx           # Entry point
-├── package.json
-├── vite.config.js
-└── index.html
+ai-website-builder/
+├── backend/              # Express.js API server
+│   ├── api/              # API routes, controllers, services
+│   ├── config/           # Database and app configuration
+│   ├── models/           # Mongoose schemas
+│   ├── middleware/       # Express middleware
+│   └── server.js        # Entry point
+├── src/                  # React frontend
+│   ├── cmps/            # React components
+│   ├── pages/            # Page components
+│   ├── services/         # API service layer
+│   ├── contexts/         # React contexts (Auth)
+│   └── assets/           # Static assets
+├── backend/public/       # Built frontend (generated)
+└── package.json          # Frontend dependencies
 ```
 
-## 🚀 Getting Started
+## 🛠️ Tech Stack
 
-### 1. Install Dependencies
+### Frontend
+- **React 18** - UI library
+- **React Router** - Client-side routing
+- **Vite** - Build tool and dev server
+- **Tailwind CSS** - Utility-first CSS framework
+- **Lucide React** - Icon library
+- **Context API** - State management
+
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **MongoDB** - Database (via Mongoose)
+- **JWT** - Authentication tokens
+- **OpenAI API** - AI code generation
+- **bcryptjs** - Password hashing
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have:
+
+- **Node.js** (v14 or higher) - [Download](https://nodejs.org/)
+- **MongoDB** - Local installation or MongoDB Atlas account
+- **OpenAI API Key** - [Get one here](https://platform.openai.com/api-keys)
+- **Git** - Version control
+
+## 🚀 Quick Start
+
+### 1. Clone the Repository
 
 ```bash
-cd starter-website
+git clone <your-repo-url>
+cd ai-website-builder
+```
+
+### 2. Install Dependencies
+
+**Frontend:**
+```bash
 npm install
 ```
 
-### 2. Start Development Server
+**Backend:**
+```bash
+cd backend
+npm install
+cd ..
+```
 
+### 3. Configure Environment Variables
+
+**Backend `.env` file** (`backend/.env`):
+```env
+PORT=3000
+NODE_ENV=development
+MONGODB_URI=mongodb://localhost:27017/ai-website-builder
+# OR for MongoDB Atlas:
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/ai-website-builder
+
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
+JWT_EXPIRES_IN=7d
+FRONTEND_URL=http://localhost:5173
+OPENAI_API_KEY=sk-your-openai-api-key-here
+```
+
+**Frontend** (optional - uses relative URLs by default):
+```env
+VITE_API_URL=http://localhost:3000/api
+```
+
+### 4. Start Development Servers
+
+**Terminal 1 - Backend:**
+```bash
+cd backend
+npm run dev
+```
+Backend runs on `http://localhost:3000`
+
+**Terminal 2 - Frontend:**
 ```bash
 npm run dev
 ```
+Frontend runs on `http://localhost:5173`
 
-### 3. Build for Production
+### 5. Open Your Browser
+
+Visit `http://localhost:5173` to see the application!
+
+## 📦 Building for Production
+
+### Build Frontend
 
 ```bash
 npm run build
 ```
 
-## 📦 Redux Store Structure
+This creates the production build in `backend/public/` directory.
 
-### Items Redux
+### Start Production Server
 
-**State:**
-- `items` - Array of items
-- `loading` - Loading state
-- `error` - Error message
-- `selectedItem` - Currently selected item
-
-**Actions:**
-- `fetchItems()` - Fetch all items
-- `createItem(itemData)` - Create new item
-- `updateItemById(itemData)` - Update item
-- `deleteItemById(itemId)` - Delete item
-- `selectItem(itemId)` - Select item
-- `clearSelectedItem()` - Clear selection
-
-**Usage:**
-```jsx
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchItems, createItem } from '../store/actions/itemsActions'
-
-function MyComponent() {
-    const dispatch = useDispatch()
-    const { items, loading } = useSelector(state => state.items)
-
-    useEffect(() => {
-        dispatch(fetchItems())
-    }, [dispatch])
-
-    const handleCreate = () => {
-        dispatch(createItem({ name: 'New Item', description: '...' }))
-    }
-}
+```bash
+cd backend
+npm start
 ```
 
-### Users Redux
+The server will serve both the API and frontend from `http://localhost:3000`.
 
-**State:**
-- `users` - Array of users
-- `currentUser` - Currently logged in user
-- `loading` - Loading state
-- `error` - Error message
-- `isAuthenticated` - Authentication status
+## 🌐 Deployment
 
-**Actions:**
-- `fetchUsers()` - Fetch all users
-- `loginUser(credentials)` - Login user
-- `registerUser(userData)` - Register new user
-- `logoutUser()` - Logout user
-- `updateUserProfile(userData)` - Update user profile
-- `deleteUserById(userId)` - Delete user
-- `getCurrentUser()` - Get current user from token
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions to Render.
 
-**Usage:**
-```jsx
-import { useDispatch, useSelector } from 'react-redux'
-import { loginUser, logoutUser } from '../store/actions/usersActions'
+**Quick Summary:**
+1. Build frontend: `npm run build`
+2. Commit `backend/public/` folder
+3. Deploy backend to Render (serves both API and frontend)
+4. Set environment variables in Render
 
-function LoginComponent() {
-    const dispatch = useDispatch()
-    const { currentUser, isAuthenticated } = useSelector(state => state.users)
+## 📚 Documentation
 
-    const handleLogin = async () => {
-        try {
-            await dispatch(loginUser({ email: 'user@example.com', password: 'password' }))
-        } catch (error) {
-            console.error('Login failed:', error)
-        }
-    }
-}
+- **[Frontend README](./FRONTEND_README.md)** - Frontend-specific documentation
+- **[Backend README](./backend/README.md)** - Backend API documentation
+- **[API Endpoints](./backend/API_ENDPOINTS.md)** - Complete API reference
+- **[Deployment Guide](./DEPLOYMENT.md)** - Production deployment instructions
+
+## 🎯 Usage Guide
+
+### Creating a Website
+
+1. **Register/Login**: Create an account or login
+2. **Enter Prompt**: On the homepage, describe the website you want
+3. **AI Generation**: The AI will generate HTML code based on your description
+4. **Preview**: View your website in the preview panel
+5. **Edit**: Use the sidebar to request modifications
+
+### Modifying a Website
+
+1. **Open Project**: Go to "My Projects" and select a project
+2. **Request Changes**: Type your modification request in the sidebar
+3. **AI Processing**: The AI will modify the HTML code
+4. **Review**: Check the preview to see changes
+
+### Publishing Projects
+
+1. **Open Project**: Navigate to your project page
+2. **Click Publish**: Use the "Publish" button
+3. **Community**: Your project will appear in the Community page
+
+## 🔐 Authentication
+
+The application uses JWT (JSON Web Tokens) for authentication:
+
+- **Registration**: Creates a new user account
+- **Login**: Returns a JWT token
+- **Protected Routes**: Require valid JWT token
+- **Token Storage**: Stored in `localStorage`
+
+## 💳 Credit System
+
+- **Initial Credits**: New users start with 20 credits
+- **Project Creation**: Costs 5 credits per project
+- **Insufficient Credits**: Users cannot create projects without enough credits
+
+## 🗂️ Project Structure Details
+
+### Frontend Structure
+```
+src/
+├── cmps/              # Reusable components
+│   ├── Header.jsx     # Navigation header
+│   ├── Footer.jsx     # Footer component
+│   ├── sidebar.jsx    # Project sidebar with chat
+│   └── ...
+├── pages/             # Page components
+│   ├── HomePage.jsx   # Landing page
+│   ├── Project.jsx    # Project editor page
+│   ├── MyProjectsPage.jsx
+│   └── ...
+├── services/          # API service layer
+│   ├── api.js         # Base API utilities
+│   ├── authService.js # Authentication
+│   └── projectService.Remote.js
+├── contexts/          # React contexts
+│   └── AuthContext.jsx # Auth state management
+└── assets/            # Static files
 ```
 
-## 🎨 Adding New Components
-
-1. Create component file in `src/cmps/`
-2. Create CSS file in `src/assets/styles/cmps/`
-3. Import and use in your pages
-
-## 📄 Adding New Pages
-
-1. Create page file in `src/pages/`
-2. Create CSS file in `src/assets/styles/pages/`
-3. Add route in `src/App.jsx`
-4. Add navigation link in `src/cmps/Header.jsx`
-
-## 🔧 Customizing
-
-### Update API Endpoints
-
-Edit the action files in `src/store/actions/` to point to your API:
-
-```jsx
-// In itemsActions.js
-const response = await fetch('/api/items')  // Change to your API
+### Backend Structure
+```
+backend/
+├── api/               # API modules
+│   ├── auth/          # Authentication routes/controllers/services
+│   ├── projects/      # Project CRUD operations
+│   ├── user/          # User management
+│   └── ai/            # AI service integration
+├── models/            # Mongoose schemas
+├── middleware/         # Express middleware
+│   ├── auth.js        # JWT authentication
+│   └── errorHandler.js
+├── config/             # Configuration
+│   └── database.js     # MongoDB connection
+└── server.js           # Express app entry point
 ```
 
-### Update Colors
+## 🧪 Testing
 
-Edit CSS variables in `src/assets/styles/basics/base.css`:
+### Manual Testing
 
-```css
-:root {
-    --primary-color: #007bff;  /* Change to your brand color */
-    /* ... */
-}
-```
+1. **Register a new user**
+2. **Create a project** with AI
+3. **Modify the project** using AI
+4. **Publish the project**
+5. **View in Community**
 
-### Update Navigation
+### API Testing
 
-Edit `navItems` array in `src/cmps/Header.jsx`:
+Use Postman or similar tools with the endpoints documented in [API_ENDPOINTS.md](./backend/API_ENDPOINTS.md).
 
-```jsx
-const navItems = [
-    { path: '/', label: 'home' },
-    { path: '/about', label: 'about' },
-    // Add your routes here
-]
-```
+## 🐛 Troubleshooting
 
-## 📚 Next Steps
+### Common Issues
 
-1. **Update API endpoints** in action files
-2. **Add your logo** to `src/assets/imgs/` and update imports
-3. **Customize colors** in CSS variables
-4. **Add more pages** as needed
-5. **Add more components** from starter-templates folder
-6. **Connect to your backend API**
+**Frontend not connecting to backend:**
+- Check `VITE_API_URL` in frontend `.env`
+- Verify backend is running on port 3000
+- Check CORS configuration
 
-## 🎯 Features Included
+**MongoDB connection errors:**
+- Verify `MONGODB_URI` is correct
+- Check MongoDB is running (if local)
+- Verify network access (if MongoDB Atlas)
 
-- ✅ Redux Toolkit setup
-- ✅ Items management (CRUD operations)
-- ✅ Users management (authentication ready)
-- ✅ React Router setup
-- ✅ Header and Footer components
-- ✅ Basic page structure
-- ✅ Responsive CSS
-- ✅ Loading and error states
+**AI generation fails:**
+- Check `OPENAI_API_KEY` is set correctly
+- Verify API key has credits/quota
+- Check error logs in backend
 
-## 📝 Notes
+**Build errors:**
+- Clear `node_modules` and reinstall
+- Check Node.js version compatibility
+- Verify all environment variables are set
 
-- All API calls are placeholder - update with your actual endpoints
-- Authentication uses localStorage for tokens
-- Redux actions are async-ready (thunk middleware included)
-- All components are functional components with hooks
+## 🤝 Contributing
 
-Happy coding! 🚀
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+ISC License
+
+## 🙏 Acknowledgments
+
+- OpenAI for the GPT API
+- React team for the amazing framework
+- MongoDB for the database solution
+- All open-source contributors
+
+## 📞 Support
+
+For issues and questions:
+- Check existing documentation
+- Review [API_ENDPOINTS.md](./backend/API_ENDPOINTS.md)
+- Check [DEPLOYMENT.md](./DEPLOYMENT.md) for deployment issues
+
+---
+
+**Built with ❤️ using React, Express, and OpenAI**
