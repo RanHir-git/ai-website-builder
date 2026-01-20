@@ -8,6 +8,28 @@ This guide will help you deploy your AI Website Builder application to Render.
 2. **MongoDB Atlas Account**: Sign up at https://www.mongodb.com/cloud/atlas (free tier available)
 3. **GitHub Repository**: Push your code to GitHub
 
+## Monorepo Setup (Frontend + Backend in Same Repo)
+
+**✅ You can deploy both from the same repo!** No need to separate them.
+
+Your structure probably looks like:
+```
+your-repo/
+├── backend/          (Node.js backend)
+│   ├── server.js
+│   ├── package.json
+│   └── ...
+├── src/              (React frontend)
+├── package.json      (Frontend package.json)
+└── ...
+```
+
+**Key Point**: Set the **Root Directory** correctly:
+- **Backend service**: Set `Root Directory` to `backend`
+- **Frontend service**: Leave `Root Directory` empty (or set to `.`)
+
+This tells Render which part of your repo to use for each service.
+
 ---
 
 ## Step 1: Set Up MongoDB Atlas
@@ -28,17 +50,49 @@ This guide will help you deploy your AI Website Builder application to Render.
 
 ## Step 2: Deploy Backend to Render
 
-### 2.1 Create Backend Service
+### 2.1 Build Frontend Locally (Before Deploying)
+
+**Important**: Build the frontend and commit the built files to git:
+
+```bash
+# From project root
+npm run build
+```
+
+This creates `backend/public/` folder with the built frontend files.
+
+**Commit the built files:**
+```bash
+git add backend/public/
+git commit -m "Build frontend for production"
+git push
+```
+
+### 2.2 Create Backend Service on Render
 
 1. Go to Render Dashboard → "New" → "Web Service"
-2. Connect your GitHub repository
+2. Connect your GitHub repository (the one with both frontend and backend)
 3. Configure the service:
    - **Name**: `ai-website-builder-backend` (or your choice)
-   - **Root Directory**: `backend`
+   - **Root Directory**: `backend` ⚠️ **IMPORTANT: Set this to `backend`**
    - **Environment**: `Node`
-   - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
+   - **Build Command**: `npm install` ⚠️ **Just `npm install` - frontend is already built**
+   - **Start Command**: `npm start` ⚠️ **Just `npm start`**
    - **Plan**: Free (or paid if you need more resources)
+
+**Note**: Since your frontend and backend are in the same repo, setting **Root Directory** to `backend` tells Render to only work with the backend folder. The `backend/public/` folder (with built frontend) should already be committed to git.
+
+**Workflow:**
+1. ✅ Build frontend: `npm run build` (creates `backend/public/`)
+2. ✅ Commit built files: `git add backend/public/ && git commit && git push`
+3. ✅ Render auto-deploys (pulls latest code including `backend/public/`)
+4. ✅ Backend serves both API and frontend from `backend/public/`
+
+**Common Mistakes:**
+- ❌ Build Command: `npm install; npm run build` (don't build on Render, build locally)
+- ✅ Build Command: `npm install` (just install backend dependencies)
+- ❌ Start Command: `npm start server:prod` (no such script exists)
+- ✅ Start Command: `npm start`
 
 ### 2.2 Set Environment Variables
 
@@ -86,10 +140,10 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 ### 3.2 Create Frontend Service
 
 1. Go to Render Dashboard → "New" → "Static Site"
-2. Connect your GitHub repository
+2. Connect your GitHub repository (same repo as backend)
 3. Configure the service:
    - **Name**: `ai-website-builder-frontend` (or your choice)
-   - **Root Directory**: (leave empty - root of repo)
+   - **Root Directory**: (leave empty - root of repo) ⚠️ **IMPORTANT: Leave empty for frontend**
    - **Build Command**: `npm install && npm run build`
    - **Publish Directory**: `dist`
    - **Environment Variables**: Add:
@@ -102,11 +156,11 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
 ### 3.3 Alternative: Deploy Frontend as Web Service
 
 If Static Site doesn't work, use Web Service:
-- **Root Directory**: (leave empty)
+- **Root Directory**: (leave empty - root of repo)
 - **Environment**: `Node`
 - **Build Command**: `npm install && npm run build`
 - **Start Command**: `npx serve -s dist -l 10000`
-- Add to `package.json` dependencies: `"serve": "^14.2.0"`
+- Add to root `package.json` dependencies: `"serve": "^14.2.0"` (if using Web Service)
 
 ---
 
