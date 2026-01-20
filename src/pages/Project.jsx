@@ -2,7 +2,7 @@ import { Header } from '../cmps/Header'
 import { Footer } from '../cmps/Footer'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react';
-import { getProject } from '../services/projectService.Remote';
+import { getProject, togglePublish as togglePublishService } from '../services/projectService.Remote';
 import Lottie from 'lottie-react';
 import { MessageSquare, SmartphoneIcon, TabletIcon, LaptopIcon, X, SaveIcon, FullscreenIcon, DownloadIcon, ShareIcon, EyeOffIcon, EyeIcon, Loader2 } from 'lucide-react';
 import loadingSpinner from '../assets/imgs/loadingJSON.json';
@@ -17,6 +17,7 @@ export function ProjectPage() {
     const [device, setDevice] = useState("desktop")
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [isSaving, setIsSaving] = useState(false)
+    const [isPublishing, setIsPublishing] = useState(false)
     const previewRef = useRef(null)
 
     const { projectId } = useParams()
@@ -67,7 +68,27 @@ export function ProjectPage() {
         element.click()
     }
 
-    const togglePublish = async () => { }
+    const togglePublish = async () => {
+        if (!project?.id || isPublishing) return
+
+        try {
+            setIsPublishing(true)
+            const response = await togglePublishService(project.id)
+            
+            if (response && response.data) {
+                // Update project state with new publish status
+                setProject(prev => ({
+                    ...prev,
+                    isPublished: response.data.isPublished
+                }))
+            }
+        } catch (error) {
+            console.error('Error toggling publish status:', error)
+            alert(error.message || 'Failed to update publish status. Please try again.')
+        } finally {
+            setIsPublishing(false)
+        }
+    }
 
     useEffect(() => {
         fetchProject();
@@ -125,9 +146,23 @@ export function ProjectPage() {
                             <button onClick={downloadCode} className='cursor-pointer text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors' style={{ background: 'linear-gradient(to bottom right, rgb(29, 78, 216), rgb(37, 99, 235))' }}>
                                 <DownloadIcon size={16} /> Download
                             </button>
-                            <button onClick={togglePublish} className="cursor-pointer text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors" style={{ background: 'linear-gradient(to bottom right, rgb(67, 56, 202), rgb(79, 70, 229))' }}>
-                                {project.isPublished ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
-                                {project.isPublished ? "Unpublish" : "Publish"}
+                            <button 
+                                onClick={togglePublish} 
+                                disabled={isPublishing}
+                                className="cursor-pointer text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed" 
+                                style={{ background: 'linear-gradient(to bottom right, rgb(67, 56, 202), rgb(79, 70, 229))' }}
+                            >
+                                {isPublishing ? (
+                                    <>
+                                        <Loader2 size={16} className="animate-spin" />
+                                        {project.isPublished ? "Unpublishing..." : "Publishing..."}
+                                    </>
+                                ) : (
+                                    <>
+                                        {project.isPublished ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
+                                        {project.isPublished ? "Unpublish" : "Publish"}
+                                    </>
+                                )}
                             </button>
                         </div>
                     </div>
