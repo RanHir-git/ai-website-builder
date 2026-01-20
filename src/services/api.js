@@ -3,7 +3,8 @@
  * Handles authentication headers and error handling
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api'
+// Use relative URL for same-origin deployment, or absolute URL if VITE_API_URL is set
+const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.DEV ? 'http://localhost:3000/api' : '/api')
 
 /**
  * Get authentication token from localStorage
