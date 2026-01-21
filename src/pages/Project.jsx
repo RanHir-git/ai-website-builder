@@ -2,7 +2,7 @@ import { Header } from '../cmps/Header'
 import { Footer } from '../cmps/Footer'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useEffect, useState, useRef } from 'react';
-import { getProject, togglePublish as togglePublishService } from '../services/projectService.Remote';
+import { getProject, togglePublish as togglePublishService, updateProject } from '../services/projectService.Remote';
 import Lottie from 'lottie-react';
 import { MessageSquare, SmartphoneIcon, TabletIcon, LaptopIcon, X, SaveIcon, FullscreenIcon, DownloadIcon, ShareIcon, EyeOffIcon, EyeIcon, Loader2 } from 'lucide-react';
 import loadingSpinner from '../assets/imgs/loadingJSON.json';
@@ -49,7 +49,42 @@ export function ProjectPage() {
         }
     }
 
-    const saveProjet = async () => { }
+    const saveProjet = async () => {
+        if (!project?.id || isSaving) return
+
+        try {
+            setIsSaving(true)
+            // Get current code from preview (includes any editor panel changes)
+            const currentCode = previewRef.current?.getCode() || project.current_code
+            
+            if (!currentCode) {
+                alert('No code to save')
+                setIsSaving(false)
+                return
+            }
+
+            // Update project and create a new version
+            const response = await updateProject(project.id, {
+                current_code: currentCode,
+            })
+
+            if (response && response.data) {
+                // Update project state with new version
+                setProject({
+                    ...response.data,
+                    conversation: response.data.conversation || project.conversation || [],
+                    versions: response.data.versions || project.versions || [],
+                    current_version_index: response.data.current_version_index || project.current_version_index || '',
+                })
+                alert('Project saved successfully!')
+            }
+        } catch (error) {
+            console.error('Error saving project:', error)
+            alert('Failed to save project: ' + error.message)
+        } finally {
+            setIsSaving(false)
+        }
+    }
 
     const downloadCode = () => { 
         const code = previewRef.current?.getCode() || project?.current_code

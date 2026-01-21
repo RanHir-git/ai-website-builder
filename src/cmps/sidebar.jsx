@@ -7,15 +7,31 @@ import { updateProject } from '../services/projectService.Remote'
 export function Sidebar({ isMenuOpen, project, setProject, isGenerating, setIsGenerating }) {
     const messagesRef = useRef(null)
     const [input, setInput] = useState('')
-    const handleRollBack = (verId) => {
+    const handleRollBack = async (verId) => {
         // Find the version by ID
         const version = project?.versions?.find(v => v.id === verId)
-        if (version) {
-            setProject(prev => ({
-                ...prev,
+        if (!version || !project?.id) return
+
+        try {
+            // Update project with rolled-back version
+            const response = await updateProject(project.id, {
+                current_code: version.code,
                 current_version_index: verId,
-                current_code: version.code || prev.current_code // Update current_code to show the rolled-back version
-            }))
+            })
+
+            if (response && response.data) {
+                // Update project state with rolled-back version
+                setProject({
+                    ...response.data,
+                    conversation: response.data.conversation || project.conversation || [],
+                    versions: response.data.versions || project.versions || [],
+                    current_version_index: verId,
+                    current_code: version.code,
+                })
+            }
+        } catch (error) {
+            console.error('Error rolling back version:', error)
+            alert('Failed to roll back version: ' + error.message)
         }
     }
     const handleRevision = async (e) => {

@@ -14,7 +14,7 @@
 
 /* Add padding to main content to account for fixed header */
 .pricing-page .main-content {
-    padding-top: var(--header-height);
+    padding-top: calc(var(--header-height) + var(--spacing-lg) * 3);
     padding-bottom: 4rem;
 }
 .basic-ticket{

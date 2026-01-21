@@ -242,8 +242,21 @@ export const createProject = async (projectData, userId) => {
     )
   }
 
-  // Create versions if provided
-  if (versions && Array.isArray(versions)) {
+  // Automatically create initial version if code was generated
+  if (generatedCode) {
+    const initialVersion = await Version.create({
+      code: generatedCode,
+      description: 'Initial version',
+      projectId: project._id,
+      timestamp: new Date(),
+    })
+    // Set current version index to the initial version
+    project.currentVersionIndex = initialVersion._id.toString()
+    await project.save()
+  }
+
+  // Create additional versions if provided
+  if (versions && Array.isArray(versions) && versions.length > 0) {
     await Version.insertMany(
       versions.map(ver => ({
         code: ver.code,
@@ -290,6 +303,7 @@ export const updateProject = async (projectId, projectData, userId) => {
   if (modificationRequest && project.currentCode) {
     try {
       const aiResult = await aiService.modifyProjectWithAI(project.currentCode, modificationRequest)
+      const oldCode = project.currentCode
       project.currentCode = aiResult.htmlCode
 
       // Save user request and AI response to conversation
@@ -307,6 +321,16 @@ export const updateProject = async (projectId, projectData, userId) => {
           timestamp: new Date(),
         },
       ])
+
+      // Automatically create a new version after AI modification
+      const newVersion = await Version.create({
+        code: aiResult.htmlCode,
+        description: `Modified: ${modificationRequest.substring(0, 50)}${modificationRequest.length > 50 ? '...' : ''}`,
+        projectId: project._id,
+        timestamp: new Date(),
+      })
+      // Update current version index to the new version
+      project.currentVersionIndex = newVersion._id.toString()
     } catch (error) {
       console.error('AI modification failed:', error)
       throw new Error('Failed to modify project with AI')
@@ -331,8 +355,21 @@ export const updateProject = async (projectId, projectData, userId) => {
     )
   }
 
-  // Update versions if provided
-  if (versions && Array.isArray(versions)) {
+  // Create a new version when code is manually updated (not from AI)
+  if (current_code !== undefined && !modificationRequest && project.currentCode !== current_code) {
+    const newVersion = await Version.create({
+      code: project.currentCode,
+      description: 'Manual save',
+      projectId: project._id,
+      timestamp: new Date(),
+    })
+    // Update current version index to the new version
+    project.currentVersionIndex = newVersion._id.toString()
+    await project.save()
+  }
+
+  // Update versions if provided manually (for bulk updates)
+  if (versions && Array.isArray(versions) && versions.length > 0) {
     await Version.deleteMany({ projectId: project._id })
     await Version.insertMany(
       versions.map(ver => ({

@@ -70,7 +70,7 @@ export function Hero() {
     }
   
     return (
-        <section className="flex flex-col items-center text-white text-sm pb-20 px-4 font-poppins relative">
+        <section className="flex flex-col items-center text-white text-sm pb-20 px-4 pt-20 font-poppins relative">
           <h1 className="text-center text-[40px] leading-[48px] md:text-6xl md:leading-[70px] mt-4 font-semibold max-w-3xl">
             Turn thoughts into a website instantly, with AI.
           </h1>
