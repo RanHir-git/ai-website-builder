@@ -14,8 +14,259 @@
 
 .main-content {
     padding: var(--spacing-xl) var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-.main-content h1 {
-    margin-bottom: var(--spacing-lg);
+/* About Section Styles */
+.about-section {
+    margin-bottom: 4rem;
+    color: #ffffff;
+}
+
+.about-section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #ffffff;
+}
+
+.about-section h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #ffffff;
+}
+
+.about-content {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.lead-text {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    margin-bottom: 3rem;
+    text-align: center;
+    color: #e0e0e0;
+}
+
+/* Features Grid */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.feature-card p {
+    line-height: 1.7;
+    color: #d0d0d0;
+    margin: 0;
+}
+
+/* Tech Stack Section */
+.tech-stack {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.tech-stack h3 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.tech-stack p {
+    line-height: 1.8;
+    color: #d0d0d0;
+    font-size: 1.1rem;
+}
+
+/* Author Section */
+.author-section {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.author-content {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.author-image-container {
+    flex-shrink: 0;
+}
+
+.author-image-placeholder {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.author-image {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    display: block;
+}
+
+.author-text {
+    flex: 1;
+    color: #ffffff;
+}
+
+.author-text h3 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+}
+
+.author-title {
+    font-size: 1.25rem;
+    color: #a0a0a0;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.author-text > p {
+    line-height: 1.8;
+    color: #e0e0e0;
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+}
+
+.author-experience,
+.author-projects {
+    margin-bottom: 2rem;
+}
+
+.author-experience h4,
+.author-projects h4 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+}
+
+.author-experience p {
+    line-height: 1.8;
+    color: #d0d0d0;
+}
+
+.author-projects ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.author-projects li {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.8;
+    color: #d0d0d0;
+}
+
+.author-projects li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    color: #f67e7e;
+    font-weight: bold;
+}
+
+.author-projects li strong {
+    color: #ffffff;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.author-contact {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.author-contact p {
+    color: #d0d0d0;
+    margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main-content {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+
+    .about-section h1 {
+        font-size: 2rem;
+    }
+
+    .about-section h2 {
+        font-size: 1.75rem;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .author-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .author-image-placeholder {
+        width: 150px;
+        height: 150px;
+    }
+
+    .author-image {
+        width: 150px;
+        height: 150px;
+    }
+
+    .author-text {
+        text-align: left;
+    }
 }

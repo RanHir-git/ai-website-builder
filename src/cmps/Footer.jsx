@@ -1,15 +1,10 @@
 import { useNavigate } from 'react-router-dom'
-// import logo from '../assets/imgs/logo.png' // Update path to your logo
+import logo from '../assets/imgs/websiteLogo.png'
 
 export function Footer() {
     const navigate = useNavigate()
 
-    // Define your navigation items
-    const navItems = [
-        { path: '/', label: 'home' },
-        { path: '/about', label: 'about' },
-        // Add more navigation items as needed
-    ]
+
 
     // Social media links
     const socialLinks = [
@@ -36,12 +31,11 @@ export function Footer() {
     // Contact information
     const contactInfo = {
         address: [
-            '123 Main Street',
-            'City, State',
-            'ZIP Code'
+            'My Home Address',
+            'Tel Aviv, Israel'
         ],
-        phone: '123-456-7890',
-        email: 'contact@example.com'
+        phone: '054-639-9110',
+        email: 'ranhirschorn@gmail.com'
     }
 
     return (
@@ -53,20 +47,8 @@ export function Footer() {
                         className="footer-logo-btn"
                         onClick={() => navigate('/')}
                     >
-                        {/* <img src={logo} alt="logo" className="logo-img" /> */}
-                        <span className="logo-text">LOGO</span>
+                        <img src={logo} alt="logo" className="logo-img" />
                     </button>
-                    <nav className="footer-nav">
-                        {navItems.map((item) => (
-                            <button 
-                                key={item.path}
-                                className="footer-nav-btn"
-                                onClick={() => navigate(item.path)}
-                            >
-                                {item.label}
-                            </button>
-                        ))}
-                    </nav>
                 </div>
 
                 {/* Contact Information */}
