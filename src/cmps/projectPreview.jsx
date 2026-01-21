@@ -67,7 +67,7 @@ export const ProjectPreview = forwardRef(({ project, isGenerating, device = 'des
     }
 
     return (
-        <div className="relative h-full bg-gray-900 flex-1 rounded-xl overflow-hidden max-sm:ml-2">
+        <div className="relative h-full bg-gray-900 flex-1 rounded-xl overflow-hidden max-sm:ml-2 px-4">
             {project.current_code ? (
                 <>
                     <iframe
